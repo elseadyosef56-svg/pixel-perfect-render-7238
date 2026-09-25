@@ -5,11 +5,12 @@ import { useEffect, useState } from "react";
 import logo from "@/assets/logo.jpeg.asset.json";
 import { company } from "./company";
 
-const navLinks = [
-  { label: "الرئيسية", to: "/", hash: undefined },
-  { label: "عن الشركة", to: "/", hash: "about" },
-  { label: "مجالات العمل", to: "/", hash: "scopes" },
+const navLinks: { label: string; hash?: string }[] = [
+  { label: "الرئيسية" },
+  { label: "عن الشركة", hash: "about" },
+  { label: "مجالات العمل", hash: "scopes" },
 ];
+
 
 export function Header() {
   const [open, setOpen] = useState(false);
@@ -51,8 +52,9 @@ export function Header() {
           {navLinks.map((item) => (
             <Link
               key={item.label}
-              to={item.to}
-              hash={item.hash}
+              to="/"
+              {...(item.hash ? { hash: item.hash } : {})}
+
               className="text-sm font-medium text-foreground/80 transition-colors hover:text-accent"
             >
               {item.label}
@@ -90,8 +92,9 @@ export function Header() {
             {navLinks.map((item) => (
               <li key={item.label}>
                 <Link
-                  to={item.to}
-                  hash={item.hash}
+                  to="/"
+                  {...(item.hash ? { hash: item.hash } : {})}
+
                   onClick={() => setOpen(false)}
                   className="block rounded-lg px-3 py-3 text-sm font-medium text-foreground/85 transition-colors hover:bg-secondary hover:text-accent"
                 >
