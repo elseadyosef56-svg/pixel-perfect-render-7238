@@ -14,18 +14,26 @@ export function Reveal({
 
   useEffect(() => {
     const el = ref.current;
-    if (!el) return;
+    if (!el || typeof IntersectionObserver === "undefined") {
+      setVisible(true);
+      return;
+    }
     const observer = new IntersectionObserver(
       (entries) => {
-        if (entries[0]?.isIntersecting) {
+        if (entries.some((e) => e.isIntersecting)) {
           setVisible(true);
           observer.disconnect();
         }
       },
-      { threshold: 0.15 },
+      { threshold: 0, rootMargin: "0px 0px -40px 0px" },
     );
     observer.observe(el);
-    return () => observer.disconnect();
+    // Safety: never leave content hidden
+    const t = window.setTimeout(() => setVisible(true), 1500);
+    return () => {
+      observer.disconnect();
+      window.clearTimeout(t);
+    };
   }, []);
 
   return (
